@@ -3,7 +3,7 @@ uvicorn[standard]
 pydantic[email]
 pydantic-settings
 SQLAlchemy>=2.0.0
-psycopg2-binary
+pg8000
 aiosqlite
 python-jose[cryptography]
 passlib[bcrypt]
