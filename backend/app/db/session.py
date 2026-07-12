@@ -12,18 +12,14 @@ def _build_engine():
             connect_args={"check_same_thread": False}
         )
 
-    # PostgreSQL via Supabase pooler
-    # Use pg8000 (pure Python) — works on Render free tier (IPv4 only)
-    # Swap dialect to postgresql+pg8000 and ensure sslmode=require
-    if "postgresql://" in url and "+pg8000" not in url:
-        url = url.replace("postgresql://", "postgresql+pg8000://", 1)
-
-    # Add sslmode=require if not already present
-    if "sslmode" not in url:
-        url += "?sslmode=require"
+    # For PostgreSQL, ensure sslmode=require is passed to psycopg2
+    connect_args = {}
+    if "postgresql" in url:
+        connect_args["sslmode"] = "require"
 
     return create_engine(
         url,
+        connect_args=connect_args,
         pool_size=5,
         max_overflow=10,
         pool_timeout=30,
