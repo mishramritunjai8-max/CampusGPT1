@@ -88,7 +88,7 @@ class GeminiAIProvider(AIProvider):
         try:
             import google.generativeai as genai
             genai.configure(api_key=self.api_key)
-            model = genai.GenerativeModel("gemini-pro")
+            model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(prompt)
             return response.text
         except Exception as e:
@@ -98,7 +98,7 @@ class GeminiAIProvider(AIProvider):
         try:
             import google.generativeai as genai
             genai.configure(api_key=self.api_key)
-            model = genai.GenerativeModel("gemini-pro")
+            model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(prompt, stream=True)
             for chunk in response:
                 if chunk.text:
