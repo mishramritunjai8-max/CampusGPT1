@@ -1,0 +1,23 @@
+# Environment files (NEVER commit these!)
+backend/.env
+backend/.env.*
+frontend/.env.local
+frontend/.env*.local
+!backend/.env.example
+!frontend/.env.example
+
+# Database files
+*.db
+*.sqlite3
+
+# Docker
+.dockerignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
