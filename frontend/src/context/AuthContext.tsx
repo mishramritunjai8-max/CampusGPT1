@@ -4,6 +4,8 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+
 export interface UserProfile {
   id: string;
   email: string;
@@ -43,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setToken(session.access_token);
             // Fetch profile from FastAPI synced DB (or mock fetch if DB sync has lag)
             try {
-              const res = await fetch("http://localhost:8000/api/v1/auth/me", {
+              const res = await fetch(`${API_BASE}/auth/me`, {
                 headers: { Authorization: `Bearer ${session.access_token}` }
               });
               if (res.ok) {
@@ -98,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setToken(session.access_token);
           // Sync profile
           try {
-            const res = await fetch("http://localhost:8000/api/v1/auth/me", {
+            const res = await fetch(`${API_BASE}/auth/me`, {
               headers: { Authorization: `Bearer ${session.access_token}` }
             });
             if (res.ok) {
@@ -133,7 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (data.session) {
           setToken(data.session.access_token);
           // Get profile
-          const res = await fetch("http://localhost:8000/api/v1/auth/me", {
+          const res = await fetch(`${API_BASE}/auth/me`, {
             headers: { Authorization: `Bearer ${data.session.access_token}` }
           });
           if (res.ok) {
@@ -156,7 +158,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // 2. Local fallback login via backend
-      const res = await fetch("http://localhost:8000/api/v1/auth/local/login", {
+      const res = await fetch(`${API_BASE}/auth/local/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, role })
@@ -202,7 +204,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         // Call backend sync profile endpoint manually to register profile immediately
         if (data.session) {
-          await fetch("http://localhost:8000/api/v1/auth/sync", {
+          await fetch(`${API_BASE}/auth/sync`, {
             method: "POST",
             headers: { 
               "Content-Type": "application/json",
